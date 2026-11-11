@@ -7,7 +7,7 @@
 <meta name="description" content="Conditions générales de vente de Jean Ferret Paysage : devis, prix, exécution des travaux, paiement, droit de rétractation, assurance et médiation.">
 <meta name="robots" content="noindex">
 <link rel="canonical" href="https://jeanferretpaysage.fr/conditions-generales/">
-<link rel="stylesheet" href="/css/style.css?v=20261111b">
+<link rel="stylesheet" href="/css/style.css?v=20261111c">
 </head>
 <body>
 

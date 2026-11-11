@@ -210,3 +210,8 @@ form.devis .rgpd{font-weight:400;color:var(--muted);font-size:.8rem}
 .quiz p.legend.sub{margin-top:8px;font-size:.92rem}
 .prose .towns{padding:0;columns:2 150px}
 [hidden]{display:none!important}
+
+/* Illustrations dessinées (en attendant les vraies photos de chantier) */
+.prose .illus{margin:0 0 24px}
+.prose .illus img{display:block;width:100%;height:auto;border-radius:4px}
+.prose .illus + h2{margin-top:0}
