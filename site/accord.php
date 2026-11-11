@@ -43,7 +43,10 @@ elseif ($valide && $_SERVER['REQUEST_METHOD'] === 'POST') {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Votre devis | Jean Ferret Paysage</title>
 <meta name="robots" content="noindex">
-<link rel="stylesheet" href="/css/style.css?v=20261111c">
+<link rel="stylesheet" href="/css/style.css?v=20261112a">
+<link rel="icon" href="/img/logo.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <style>
 .devis-recap{border:1px solid var(--line);border-radius:8px;padding:20px;margin:20px 0;background:#fff}
 .devis-recap table{width:100%;border-collapse:collapse}.devis-recap td{padding:10px 0;border-bottom:1px solid var(--line);vertical-align:top}
@@ -56,7 +59,7 @@ elseif ($valide && $_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
 <header class="site-header"><div class="in">
-  <a class="logo" href="/"><svg viewBox="0 0 32 32" aria-hidden="true"><path fill="#1f4d2e" d="M16 2c7 5 10 10 10 15a10 10 0 0 1-20 0C6 12 9 7 16 2z"/><rect fill="#7fae3e" x="14.6" y="19" width="2.8" height="11"/></svg><span><b>Jean Ferret</b><small>Paysage · Élagage</small></span></a>
+  <a class="logo" href="/"><img src="/img/logo.svg" width="52" height="52" alt=""><span><b>Jean Ferret</b><small>Paysage · Élagage</small></span></a>
 </div></header>
 <main><section><div class="in" style="max-width:760px">
 <?php if (!$valide): ?>
