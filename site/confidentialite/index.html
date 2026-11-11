@@ -31,6 +31,7 @@
     <li><a href="/taille-haie-nantes/">Haies</a></li>
     <li><a href="/tonte-entretien-jardin-nantes/">Jardin</a></li>
     <li><a href="/cloture-claustra-nantes/">Clôtures</a></li>
+    <li><a href="/conseils-jardin/">Conseils</a></li>
     <li><a href="/faq/">FAQ</a></li>
     <li><a class="cta" href="/tarifs-devis/">Estimer mon prix</a></li>
   </ul></nav>
