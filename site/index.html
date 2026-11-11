@@ -172,6 +172,7 @@
         <label class="f">Prénom et nom<input type="text" name="nom" autocomplete="name" required></label>
         <label class="f">Téléphone<input type="tel" name="telephone" autocomplete="tel" inputmode="tel" required></label>
         <label class="f">E-mail, pour recevoir votre devis<input type="email" name="email" autocomplete="email" inputmode="email" required></label>
+        <label class="f">Adresse du chantier<input type="text" name="adresse" autocomplete="street-address" placeholder="n° et rue" required></label>
         <label class="f">Commune<input type="text" name="commune" autocomplete="address-level2" required></label>
         <label class="f">Accès pour la nacelle ou les machines<select name="acces"><option>Facile, portail large</option><option>Étroit</option><option>Pas d'accès véhicule</option><option>Je ne sais pas</option></select></label>
         <label class="f">Photos (facultatif, jusqu'à 5)<input type="file" name="photos[]" accept="image/*" multiple></label>
@@ -182,7 +183,7 @@
         <button class="back" type="button" id="quiz-back" hidden>Retour</button>
         <button class="btn btn-a" type="submit" id="quiz-next">Continuer</button>
       </div>
-      <p class="reassure">Gratuit et sans engagement. Votre devis estimatif arrive par e-mail, vos coordonnées ne servent qu’à ce devis.</p>
+      <p class="reassure">Gratuit et sans engagement. Votre devis détaillé arrive par e-mail en PDF, à accepter en un clic. Vos coordonnées ne servent qu’à ce devis.</p>
     </form>
   </div>
 </section>
@@ -330,7 +331,7 @@
     box.hidden=false;
     if(!r){v.textContent='Prix sur devis';nn.textContent='Ce chantier se chiffre après visite. Laissez vos coordonnées, on vous rappelle.';h.value='Sur devis';return}
     v.textContent=r[1]?('entre '+eur(r[0])+' et '+eur(r[1])):('à partir de '+eur(r[0]));
-    nn.textContent=note+'Estimation indicative, nette (TVA non applicable). Prix définitif au forfait après visite gratuite.';
+    nn.textContent=note+'Votre devis détaillé, avec un prix unique, arrive par e-mail. Prix net (TVA non applicable), confirmé lors d’une visite gratuite.';
     h.value=v.textContent;
   }
   function show(k){
