@@ -211,7 +211,9 @@ form.devis .rgpd{font-weight:400;color:var(--muted);font-size:.8rem}
 .prose .towns{padding:0;columns:2 150px}
 [hidden]{display:none!important}
 
-/* Illustrations dessinées (en attendant les vraies photos de chantier) */
+/* Photos d'illustration en tête des pages services */
 .prose .illus{margin:0 0 24px}
 .prose .illus img{display:block;width:100%;height:auto;border-radius:4px}
+.prose .illus figcaption{font-size:.78rem;color:var(--muted);margin-top:6px}
+.prose .illus figcaption a{color:inherit}
 .prose .illus + h2{margin-top:0}
