@@ -22,11 +22,12 @@ elseif ($valide && $_SERVER['REQUEST_METHOD'] === 'POST') {
   else {
     $d['accepte_le'] = date('d/m/Y à H:i'); $d['accepte_par'] = mb_substr($nom, 0, 120);
     $d['accepte_ip'] = $_SERVER['REMOTE_ADDR'] ?? ''; $d['statut'] = 'accepté';
+    $d['debut_anticipe'] = !empty($_POST['anticipe']);
     enregistrer_devis($d);
     $pdf = devis_pdf($d);
     $c = $d['client'];
     envoyer(DESTINATAIRE, "✅ Devis {$d['numero']} ACCEPTÉ : {$d['travaux']} à {$c['commune']} ({$c['nom']})",
-      "Bonne nouvelle : le devis {$d['numero']} vient d'être accepté en ligne.\n\nClient : {$c['nom']}\nTéléphone : {$c['telephone']}\nE-mail : {$c['email']}\nChantier : {$c['adresse']}, {$c['commune']}\n\nTotal : " . eur($d['total']) . "\nAccepté le {$d['accepte_le']} par « {$d['accepte_par']} ».\n\nAppelez le client pour fixer la visite et la date des travaux. Le devis signé est joint.",
+      "Bonne nouvelle : le devis {$d['numero']} vient d'être accepté en ligne.\n\nClient : {$c['nom']}\nTéléphone : {$c['telephone']}\nE-mail : {$c['email']}\nChantier : {$c['adresse']}, {$c['commune']}\n\nTotal : " . eur($d['total']) . "\nAccepté le {$d['accepte_le']} par « {$d['accepte_par']} ».\n" . ($d['debut_anticipe'] ? "Le client DEMANDE à commencer avant la fin du délai de rétractation de 14 jours.\n" : "Le client n'a pas demandé de début anticipé : attendre la fin du délai de rétractation de 14 jours (sauf nouvel accord écrit).\n") . "\nAppelez le client pour fixer la visite et la date des travaux. Le devis signé est joint.",
       null, [["devis-{$d['numero']}-accepte.pdf", 'application/pdf', $pdf]], $c['email'], 'Site Jean Ferret');
     envoyer($c['email'], "Devis {$d['numero']} accepté – Jean Ferret Paysage",
       "Bonjour {$c['nom']},\n\nVotre accord pour le devis {$d['numero']} (" . eur($d['total']) . ") est bien enregistré. Jean Ferret vous appelle pour fixer la visite et la date des travaux.\n\nVous disposez d'un délai de rétractation de 14 jours.\n\nJean Ferret · " . TEL,
@@ -86,7 +87,8 @@ elseif ($valide && $_SERVER['REQUEST_METHOD'] === 'POST') {
   <form class="accord" method="post">
     <input type="hidden" name="d" value="<?= h($num) ?>"><input type="hidden" name="t" value="<?= h($tok) ?>">
     <?php if ($erreur): ?><p class="erreur"><?= h($erreur) ?></p><?php endif; ?>
-    <label><input type="checkbox" name="accepte" value="1" required> J'ai lu ce devis et je l'accepte, ainsi que ses conditions. Je dispose d'un délai de rétractation de 14 jours.</label>
+    <label><input type="checkbox" name="accepte" value="1" required> <span>J'ai lu ce devis et je l'accepte, ainsi que les <a href="/conditions-generales/" target="_blank">conditions générales de vente</a>. Je dispose d'un délai de rétractation de 14 jours.</span></label>
+    <label><input type="checkbox" name="anticipe" value="1"> <span>Facultatif : je demande que les travaux puissent commencer avant la fin de ce délai de 14 jours. Si je me rétracte ensuite, je paierai la part déjà réalisée.</span></label>
     <label style="flex-direction:column;gap:6px">Votre nom et prénom, en guise de signature<input type="text" name="signature" required autocomplete="name"></label>
     <button class="btn btn-a" type="submit">J'accepte le devis</button>
     <p class="note">Une question avant d'accepter ? Appelez le <a href="tel:+33610641947"><?= TEL ?></a>.</p>
@@ -94,5 +96,6 @@ elseif ($valide && $_SERVER['REQUEST_METHOD'] === 'POST') {
   <?php endif; ?>
 <?php endif; ?>
 </div></section></main>
+<script src="/js/consentement.js?v=1" defer></script>
 </body>
 </html>

@@ -2,6 +2,7 @@
 // Fonctions communes : barème, devis PDF, enregistrement, e-mails.
 date_default_timezone_set('Europe/Paris');
 require __DIR__ . '/pdf.php';
+require_once __DIR__ . '/cgv.php';
 
 const DESTINATAIRE = 'jeanferretpaysage@gmail.com'; // boîte Gmail de Jean
 const EXPEDITEUR   = 'site@jeanferretpaysage.fr';   // adresse du domaine, sert seulement à envoyer (Ionos l'exige)
@@ -159,17 +160,35 @@ function devis_pdf($d) {
   $cond = "Prix forfaitaire établi d'après les informations et photos que vous avez transmises. Il est confirmé lors d'une visite gratuite avant les travaux ; si l'état réel du chantier diffère, un devis rectificatif vous sera proposé et ne s'applique qu'avec votre accord.\n"
         . "Devis gratuit, valable " . VALIDITE_JOURS . " jours. Date d'intervention fixée ensemble après acceptation. Règlement à la fin des travaux, sur facture.\n"
         . "Vous disposez d'un délai de rétractation de 14 jours à compter de l'acceptation de ce devis (articles L221-18 et suivants du Code de la consommation).\n"
-        . "Entreprise assurée en responsabilité civile professionnelle.";
+        . "Entreprise assurée en responsabilité civile professionnelle. Conditions générales de vente en pages suivantes, également sur jeanferretpaysage.fr/conditions-generales/.";
   $y = $p->paragraphe($m, $y, $W, $cond, 8.8, false, '#1d2a1f', 1.4) + 12;
   $p->rect($m, $y, $W, 92, null, '#7fae3e');
   $p->texte($m + 12, $y + 20, 'BON POUR ACCORD', 10, true, $vert);
   if (!empty($d['accepte_le'])) {
-    $p->paragraphe($m + 12, $y + 38, $W - 24, 'Devis accepté en ligne le ' . $d['accepte_le'] . ' par ' . $d['accepte_par'] . '.', 9.5, true);
+    $p->paragraphe($m + 12, $y + 38, $W - 24, 'Devis accepté en ligne le ' . $d['accepte_le'] . ' par ' . $d['accepte_par'] . '.' . (!empty($d['debut_anticipe']) ? ' Le client a demandé que les travaux puissent commencer avant la fin du délai de rétractation.' : ''), 9.5, true);
   } else {
     $p->paragraphe($m + 12, $y + 38, $W - 24, "Acceptez ce devis en un clic avec le lien reçu par e-mail.\nOu renvoyez-le daté et signé, précédé de la mention « Bon pour accord ».", 9.5);
     $p->texte($m + 12, $y + 80, 'Date :', 9, false, $gris); $p->texte($m + $W / 2, $y + 80, 'Signature :', 9, false, $gris);
   }
-  $p->texte(MiniPDF::W / 2, MiniPDF::H - 24, ENTREPRISE . ' · ' . ADRESSE . ' · SIREN ' . SIREN . ' · jeanferretpaysage.fr', 7.5, false, $gris, 'c');
+  $p->texte(MiniPDF::W / 2, MiniPDF::H - 24, 'Page 1', 7.5, false, $gris, 'c');
+  // Conditions générales de vente
+  $p->addPage(); $page = 2;
+  $p->texte($m, 50, 'Conditions générales de vente', 16, true, $vert);
+  $p->texte($m, 66, ENTREPRISE . ' · ' . CGV_VERSION . ' · Devis n° ' . $d['numero'], 8.5, false, $gris);
+  $y = 92; $col = $W;
+  foreach (cgv() as $art) {
+    $haut = (ceil(MiniPDF::largeur($art[1], 8.6) / $col) + 1) * 8.6 * 1.38 + 22;
+    if ($y + $haut > MiniPDF::H - 50) { $p->texte(MiniPDF::W / 2, MiniPDF::H - 24, "Page $page", 7.5, false, $gris, 'c'); $p->addPage(); $page++; $y = 50; }
+    $p->texte($m, $y, $art[0], 10, true, $vert);
+    $y = $p->paragraphe($m, $y + 15, $col, $art[1], 8.6, false, '#1d2a1f', 1.38) + 8;
+  }
+  if ($y + 150 > MiniPDF::H - 50) { $p->texte(MiniPDF::W / 2, MiniPDF::H - 24, "Page $page", 7.5, false, $gris, 'c'); $p->addPage(); $page++; $y = 50; }
+  $y += 6; $p->rect($m, $y, $W, 132, null, '#7fae3e');
+  $p->texte($m + 12, $y + 20, 'FORMULAIRE DE RÉTRACTATION', 10, true, $vert);
+  $p->texte($m + 12, $y + 34, 'À remplir et renvoyer uniquement si vous souhaitez vous rétracter du contrat.', 8.5, false, $gris);
+  $p->paragraphe($m + 12, $y + 52, $W - 24, formulaire_retractation(), 8.6, false, '#1d2a1f', 1.6);
+  $p->texte(MiniPDF::W / 2, MiniPDF::H - 24, "Page $page", 7.5, false, $gris, 'c');
+  $p->texte(MiniPDF::W / 2, MiniPDF::H - 36, ENTREPRISE . ' · ' . ADRESSE . ' · SIREN ' . SIREN . ' · jeanferretpaysage.fr', 7.5, false, $gris, 'c');
   return $p->sortie();
 }
 
