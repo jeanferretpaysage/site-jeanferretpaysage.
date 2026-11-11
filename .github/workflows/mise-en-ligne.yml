@@ -1,0 +1,31 @@
+# Envoie automatiquement le dossier "site" sur l'hébergement Ionos (dossier /site)
+# à chaque modification. Les accès SFTP sont rangés dans les secrets du dépôt :
+# IONOS_SFTP_HOTE, IONOS_SFTP_UTILISATEUR, IONOS_SFTP_MOT_DE_PASSE.
+name: Mise en ligne Ionos
+on:
+  push:
+    branches: [main]
+    paths: ['site/**', '.github/workflows/mise-en-ligne.yml']
+  workflow_dispatch:
+concurrency: mise-en-ligne
+jobs:
+  envoi:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Vérifier les accès
+        id: acces
+        env:
+          HOTE: ${{ secrets.IONOS_SFTP_HOTE }}
+        run: |
+          if [ -z "$HOTE" ]; then echo "Accès SFTP pas encore renseignés : rien n'est envoyé."; echo "ok=non" >> "$GITHUB_OUTPUT"; else echo "ok=oui" >> "$GITHUB_OUTPUT"; fi
+      - name: Envoyer sur Ionos
+        if: steps.acces.outputs.ok == 'oui'
+        env:
+          HOTE: ${{ secrets.IONOS_SFTP_HOTE }}
+          UTIL: ${{ secrets.IONOS_SFTP_UTILISATEUR }}
+          MDP: ${{ secrets.IONOS_SFTP_MOT_DE_PASSE }}
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq lftp
+          # Envoie les fichiers nouveaux ou modifiés. Ne supprime rien sur Ionos.
+          lftp -u "$UTIL","$MDP" "sftp://$HOTE" -e "set sftp:auto-confirm yes; set net:max-retries 3; mirror --reverse --only-newer --ignore-time --verbose site/ /site/; bye"

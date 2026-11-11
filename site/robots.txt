@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://jeanferretpaysage.fr/sitemap.xml
