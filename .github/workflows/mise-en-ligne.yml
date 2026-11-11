@@ -28,4 +28,4 @@ jobs:
         run: |
           sudo apt-get update -qq && sudo apt-get install -y -qq lftp
           # Envoie les fichiers nouveaux ou modifiés. Ne supprime rien sur Ionos.
-          lftp -u "$UTIL","$MDP" "sftp://$HOTE" -e "set sftp:auto-confirm yes; set net:max-retries 3; mirror --reverse --only-newer --ignore-time --verbose site/ /site/; bye"
+          lftp -u "$UTIL","$MDP" "sftp://$HOTE" -e "set sftp:auto-confirm yes; set net:max-retries 3; mirror --reverse --verbose site/ /site/; bye"
