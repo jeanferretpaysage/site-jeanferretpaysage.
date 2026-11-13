@@ -24,6 +24,16 @@ if ($r['nom'] === '' || $r['telephone'] === '' || !preg_match('/^[0-9 +().-]{6,3
   header('Location: /?erreur=1#estimer'); exit;
 }
 
+// Filtre anti-robots : une demande suspecte est gardée de côté (dossier devis, statut « spam »),
+// sans devis envoyé ni e-mail à Jean. Le visiteur voit la page de remerciement comme d'habitude.
+$raison = raison_spam($r, $message, $_POST);
+if ($raison !== null) {
+  $numero = 'SPAM-' . date('Ymd-His') . '-' . bin2hex(random_bytes(2));
+  enregistrer_devis(['numero' => $numero, 'date' => date('d/m/Y H:i'), 'statut' => 'spam', 'raison' => $raison,
+    'ip' => $_SERVER['REMOTE_ADDR'] ?? '', 'reponses' => $r, 'message' => $message]);
+  header('Location: /merci.html'); exit;
+}
+
 $calc = $r['travaux'] !== '' ? calculer($r) : ['postes' => [], 'total' => null, 'fourchette' => '', 'note' => ''];
 $numero = 'JF-' . date('Ymd-His') . '-' . bin2hex(random_bytes(2));
 $avecDevis = $calc['total'] !== null && $r['email'] !== '';
@@ -82,3 +92,38 @@ if ($ok && $avecDevis) {
 
 header('Location: ' . ($ok ? ($avecDevis ? '/merci.html?devis=1' : '/merci.html') : '/?erreur=1#estimer'));
 exit;
+
+// Renvoie la raison si la demande ressemble à un robot ou à du démarchage, sinon null.
+function raison_spam($r, $message, $post) {
+  // 1. Téléphone français : 10 chiffres commençant par 0, ou +33 / 0033 suivi de 9 chiffres
+  $tel = preg_replace('/[^0-9+]/', '', $r['telephone']);
+  if (!preg_match('/^(0[1-9][0-9]{8}|(\+33|0033)[1-9][0-9]{8})$/', $tel)) return 'téléphone non français';
+  // 2. Lien internet dans le message ou dans un champ texte
+  $tout = $message . ' ' . $r['nom'] . ' ' . $r['adresse'] . ' ' . $r['commune'] . ' ' . $r['taille'];
+  if (preg_match('~(https?://|www\.|\[url|<a\s)~i', $tout)) return 'lien internet dans la demande';
+  // 3. Démarchage en anglais (SEO, marketing…) : au moins 2 mots typiques
+  preg_match_all('/\b(seo|website|traffic|backlinks?|marketing|proposal|ranking|regards|hello|dear|offer|crypto|loan|casino)\b/i', $message, $m);
+  if (count(array_unique(array_map('strtolower', $m[0]))) >= 2) return 'démarchage en anglais';
+  // 4. Formulaire envoyé en moins de 4 secondes (le champ « duree » est rempli par la page)
+  if (isset($post['duree']) && ctype_digit((string)$post['duree']) && (int)$post['duree'] < 4000) return 'formulaire rempli trop vite';
+  // 5. Simulateur : seuls les champs du type de travaux choisi sont envoyés par la page
+  if (strpos($r['source'], 'simulateur') !== false) {
+    if ($r['commune'] === '') return 'commune vide';
+    $champs = ['Élagage' => ['hauteur_arbre','pres_maison'], 'Abattage' => ['hauteur_arbre','pres_maison'],
+      'Haie' => ['haie_longueur','haie_hauteur','haie_faces'], 'Souche' => ['souche_circ','souche_nb','souche_racines'],
+      'Tonte' => ['surface'], 'Création de pelouse' => ['surface'], 'Clôture' => ['cloture_ml','cloture_type'], 'Terrassement' => ['terrain_surface']];
+    $permis = $champs[$r['travaux']] ?? null;
+    if ($permis === null) return 'type de travaux inconnu';
+    foreach (['hauteur_arbre','pres_maison','haie_longueur','haie_hauteur','haie_faces','souche_circ','souche_nb','souche_racines','surface','cloture_ml','cloture_type','terrain_surface'] as $k)
+      if ($r[$k] !== '' && !in_array($k, $permis, true)) return "champ « $k » rempli pour « {$r['travaux']} »";
+  }
+  // 6. Valeurs impossibles (mêmes limites que sur la page)
+  $bornes = ['haie_longueur' => [1, 1000], 'haie_hauteur' => [0.5, 10], 'souche_circ' => [10, 800], 'souche_nb' => [1, 50],
+    'surface' => [10, 50000], 'cloture_ml' => [1, 2000], 'terrain_surface' => [1, 50000]];
+  foreach ($bornes as $k => [$min, $max]) {
+    if ($r[$k] === '') continue;
+    $v = str_replace(',', '.', $r[$k]);
+    if (!is_numeric($v) || $v < $min || $v > $max) return "valeur impossible pour « $k »";
+  }
+  return null;
+}

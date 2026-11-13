@@ -331,5 +331,9 @@
 })();
 </script>
 <script src="/js/consentement.js?v=1" defer></script>
+<script>
+// Anti-robots : durée de remplissage envoyée avec le formulaire
+(function(){var t=Date.now();document.querySelectorAll('form[action$="devis.php"]').forEach(function(f){var i=document.createElement('input');i.type='hidden';i.name='duree';f.appendChild(i);f.addEventListener('submit',function(){i.value=String(Date.now()-t)});});})();
+</script>
 </body>
 </html>
