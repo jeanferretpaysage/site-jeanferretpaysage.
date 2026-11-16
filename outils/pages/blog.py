@@ -12,7 +12,12 @@ ARTICLES = [
      "Distances, branches, racines, feuilles : ce que dit le Code civil et comment régler ça à l'amiable."),
     ("/conseils-jardin/arbre-tombe-tempete/", "Arbre tombé ou abîmé après une tempête",
      "Les bons réflexes, l'assurance, et quand un arbre penché devient dangereux."),
+    ("/conseils-jardin/prix-abattage-arbre/", "Prix d'un abattage d'arbre",
+     "Petit arbre, grand arbre, arbre collé à la maison : nos prix, ce qui les fait varier, la souche et le bois."),
+    ("/conseils-jardin/prix-taille-haie-metre/", "Prix d'une taille de haie au mètre",
+     "Combien coûte le mètre de haie selon la hauteur et les faces à tailler, ramassage compris."),
 ]
+DATE2 = "2026-11-16"
 
 SIDE_BLOG = [(t, u) for u, t, _ in ARTICLES]
 
@@ -25,7 +30,7 @@ cartes = "".join(
 PAGES.append(dict(
     path="/conseils-jardin/",
     title="Conseils jardin et arbres près de Nantes | Jean Ferret",
-    desc="Conseils d'un élagueur nantais : quand tailler une haie, prix d'un élagage, arbre du voisin, arbre tombé après une tempête. Réponses claires et concrètes.",
+    desc="Conseils d'un élagueur nantais : quand tailler une haie, prix d'un élagage, d'un abattage ou d'une haie au mètre, arbre du voisin, arbre tombé.",
     h1="Conseils jardin et arbres",
     intro="Les questions qu'on me pose le plus souvent sur les chantiers, avec des réponses simples. Pour un cas précis, le plus rapide reste d'envoyer une photo.",
     crumbs=[BLOG],
@@ -266,4 +271,114 @@ PAGES.append(dict(
     ],
     side=[("Abattage d'arbre", "/abattage-arbre-nantes/"), ("Élagage à Nantes", "/elagage-nantes/")] + SIDE_BLOG[:3],
     band="Un arbre abîmé par le vent ?",
+))
+
+
+# ---------------------------------------------------------------- 5. prix abattage
+PAGES.append(dict(
+    path="/conseils-jardin/prix-abattage-arbre/",
+    title="Prix d'un abattage d'arbre près de Nantes | Jean Ferret",
+    desc="Combien coûte l'abattage d'un arbre ? Nos prix selon la taille, l'arbre collé à la maison, la souche, le bois et les déchets. Devis gratuit sur photo.",
+    h1="Prix d'un abattage d'arbre",
+    intro="Le prix d'un abattage dépend de la hauteur de l'arbre, mais surtout de la place qu'il y a autour pour le faire tomber. Voici nos prix, évacuation comprise.",
+    crumbs=[BLOG, ("Prix d'un abattage", "/conseils-jardin/prix-abattage-arbre/")],
+    article=DATE2,
+    img=("img/abattage-arbre-nantes-entaille-tronconneuse.webp",
+         "Entaille d'abattage à la tronçonneuse au pied d'un arbre (photo d'illustration)"),
+    body="""
+    <h2>Nos prix d'abattage</h2>
+    <div class="table-wrap"><table class="prices">
+      <tr><th>Arbre</th><th>Prix indicatif, évacuation comprise</th></tr>
+      <tr><td>Petit arbre, moins de 5 m</td><td>à partir de 260 €</td></tr>
+      <tr><td>Arbre moyen, 5 à 10 m</td><td>à partir de 650 €</td></tr>
+      <tr><td>Grand arbre, plus de 10 m</td><td>à partir de 1 040 €</td></tr>
+      <tr><td>Arbre dangereux ou collé à la maison, démonté morceau par morceau</td><td>jusqu'à 4 550 €</td></tr>
+    </table></div>
+    <p class="note">Forfait selon le chantier, TVA non applicable (art. 293 B du CGI). Si vous gardez le bois et les branches, le prix baisse d'environ 25 %. Devis gratuit, prix fixé avant de commencer.</p>
+
+    <h2>Abattage direct ou démontage : la vraie différence de prix</h2>
+    <p>Quand il y a de la place, l'arbre est abattu d'un bloc : on taille une entaille du côté où il doit tomber, puis un trait d'abattage de l'autre côté, et l'arbre se couche dans l'axe prévu. C'est le cas le moins cher.</p>
+    <p>Quand l'arbre est près d'une maison, d'une clôture, d'une route ou d'une ligne, il ne peut pas tomber entier. On le démonte du haut vers le bas : chaque morceau est coupé puis descendu à la corde, sans rien lâcher sur le toit ou la pelouse. Ce travail demande plus de temps et plus de monde, et c'est ce qui explique les prix du haut du tableau.</p>
+
+    <h2>Ce qui fait monter le prix</h2>
+    <ul>
+      <li>pas d'accès pour la nacelle ou le broyeur, donc tout sort à la main ;</li>
+      <li>un arbre mort ou creux, qui casse de façon moins prévisible ;</li>
+      <li>un gros volume de bois et de branches à évacuer ;</li>
+      <li>une ligne électrique ou téléphonique à proximité, qui impose des démarches avant le chantier.</li>
+    </ul>
+
+    <h2>La souche et le bois</h2>
+    <p>Après l'abattage, la souche est coupée au ras du sol. Elle peut rester, mais elle fera parfois des rejets et empêche de replanter au même endroit. Pour la faire disparaître, l'<a href="/dessouchage-nantes/">enlèvement de souche</a> commence à 260 € pour une petite souche, et peut aller jusqu'à 2 600 € pour une très grosse.</p>
+    <p>Le tronc peut être coupé en bûches et laissé sur place pour votre cheminée : vous payez moins cher et vous gardez du bois de chauffage.</p>
+    <div class="inline-cta"><p>Une photo de l'arbre et de ce qu'il y a autour suffit pour un premier prix.</p><a class="btn btn-a" href="/tarifs-devis/">Estimer mon prix</a></div>
+
+    <h2>Faut-il une autorisation ?</h2>
+    <p>Dans la plupart des jardins, non. Une démarche en mairie est nécessaire si l'arbre est protégé par le plan local d'urbanisme, par exemple en espace boisé classé, ou situé en secteur protégé. Près d'une ligne électrique, une déclaration de travaux est obligatoire avant d'intervenir. Et on évite d'abattre au printemps, quand les oiseaux nichent, sauf arbre dangereux.</p>
+    <p>La meilleure période va de l'automne à la fin de l'hiver. Tous nos prix sont sur la page <a href="/tarifs-devis/">tarifs et devis</a>, et le détail de nos méthodes sur la page <a href="/abattage-arbre-nantes/">abattage d'arbre</a>.</p>
+""",
+    faq=[
+        ("Combien coûte l'abattage d'un arbre de 10 m ?",
+         "À partir de 650 € chez nous, évacuation comprise, s'il peut tomber entier. S'il faut le démonter près d'une maison, le prix monte selon le travail."),
+        ("L'enlèvement de la souche est-il compris ?",
+         "Non, la souche est coupée au ras du sol. Son enlèvement est un travail à part, à partir de 260 € pour une petite souche."),
+        ("Peut-on garder le bois après l'abattage ?",
+         "Oui. Le tronc est coupé en bûches et laissé sur place, et le prix baisse d'autant."),
+    ],
+    side=[("Abattage d'arbre", "/abattage-arbre-nantes/"), ("Enlèvement de souches", "/dessouchage-nantes/"),
+          ("Tous les tarifs", "/tarifs-devis/")] + [SIDE_BLOG[1], SIDE_BLOG[3]],
+    band="Un arbre à abattre ?",
+))
+
+# ---------------------------------------------------------------- 6. prix haie au mètre
+PAGES.append(dict(
+    path="/conseils-jardin/prix-taille-haie-metre/",
+    title="Prix d'une taille de haie au mètre | Jean Ferret",
+    desc="Combien coûte le mètre de haie à tailler ? Nos prix selon la hauteur et les faces, ramassage compris, et ce qui fait varier le devis. Estimation gratuite.",
+    h1="Prix d'une taille de haie au mètre",
+    intro="On chiffre une haie au forfait, mais le prix au mètre aide à se faire une idée. Pour une haie de 2 m taillée sur les deux faces et le dessus, comptez autour de 17 € le mètre, ramassage compris.",
+    crumbs=[BLOG, ("Prix d'une haie au mètre", "/conseils-jardin/prix-taille-haie-metre/")],
+    article=DATE2,
+    img=("img/taille-haie-nantes-haie-conifere-taille-haie.webp",
+         "Haie de conifères en cours de taille (photo d'illustration)"),
+    body="""
+    <h2>Notre point de repère</h2>
+    <p>Une haie de 30 m, environ 2 m de haut, taillée sur les deux faces et le dessus, avec ramassage et évacuation : environ 500 €. Soit à peu près 17 € le mètre.</p>
+
+    <h2>Prix indicatif au mètre selon la hauteur</h2>
+    <div class="table-wrap"><table class="prices">
+      <tr><th>Hauteur de la haie</th><th>Deux faces et dessus, ramassage compris</th></tr>
+      <tr><td>Jusqu'à 1,50 m</td><td>environ 13 € le mètre</td></tr>
+      <tr><td>1,50 à 2,50 m</td><td>environ 17 € le mètre</td></tr>
+      <tr><td>2,50 à 3,50 m</td><td>environ 22 € le mètre</td></tr>
+      <tr><td>Plus de 3,50 m</td><td>environ 27 € le mètre</td></tr>
+    </table></div>
+    <p class="note">Ordres de grandeur tirés de notre barème, pour une haie en bon état et accessible. Le prix final est un forfait donné après visite, TVA non applicable (art. 293 B du CGI). Petit chantier : 100 € minimum.</p>
+
+    <h2>Et si on ne taille qu'une partie ?</h2>
+    <ul>
+      <li><strong>Votre côté et le dessus</strong> : environ 60 % du prix complet. C'est le cas le plus courant quand le voisin s'occupe de sa face.</li>
+      <li><strong>Les deux faces sans le dessus</strong> : environ 80 %.</li>
+      <li><strong>Le dessus seul</strong>, pour réduire la hauteur : environ un tiers du prix complet, mais une forte réduction sur une vieille haie demande plus de travail.</li>
+      <li><strong>Vous gardez les déchets</strong> : le prix baisse d'environ 25 %.</li>
+    </ul>
+
+    <h2>Ce qui fait varier le prix</h2>
+    <p>La longueur et la hauteur font l'essentiel, mais trois choses changent beaucoup le devis. L'épaisseur : une haie de thuyas qui n'a pas été taillée depuis des années donne deux à trois fois plus de déchets. L'accès à l'arrière : une haie collée à un mur ou à la clôture du voisin se taille plus lentement. Et l'essence : un laurier-palme aux grandes feuilles se finit souvent au sécateur pour rester propre.</p>
+    <div class="inline-cta"><p>Donnez la longueur et la hauteur, ajoutez une photo : vous voyez le prix tout de suite.</p><a class="btn btn-a" href="/tarifs-devis/">Estimer mon prix</a></div>
+
+    <h2>Tailler ou arracher ?</h2>
+    <p>Une haie trop haute, dégarnie du bas ou malade revient parfois plus cher à rattraper qu'à remplacer. L'arrachage, avec les souches, se chiffre au cas par cas. On peut ensuite replanter ou poser une <a href="/cloture-claustra-nantes/">clôture</a>. Pour la bonne période, voyez <a href="/conseils-jardin/quand-tailler-une-haie/">quand tailler une haie</a>, et pour le service complet la page <a href="/taille-haie-nantes/">taille de haies</a>.</p>
+""",
+    faq=[
+        ("Quel est le prix au mètre d'une taille de haie ?",
+         "Autour de 17 € le mètre pour une haie de 2 m taillée sur les deux faces et le dessus, ramassage compris. Moins pour une haie basse, plus pour une haie haute."),
+        ("Le ramassage est-il compris ?",
+         "Oui, le ramassage et l'évacuation des déchets sont compris. Si vous les gardez, le prix baisse d'environ 25 %."),
+        ("Pourquoi un forfait plutôt qu'un prix au mètre ?",
+         "Parce que l'épaisseur, l'accès et l'essence changent beaucoup le travail. Le prix au mètre donne une idée, le forfait fixe le prix avant le chantier."),
+    ],
+    side=[("Taille de haies près de Nantes", "/taille-haie-nantes/"), ("Clôtures et claustras", "/cloture-claustra-nantes/"),
+          ("Tous les tarifs", "/tarifs-devis/")] + [SIDE_BLOG[0], SIDE_BLOG[2]],
+    band="Une haie à tailler ?",
 ))

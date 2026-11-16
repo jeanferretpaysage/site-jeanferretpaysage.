@@ -123,8 +123,15 @@ form.devis .rgpd{font-weight:400;color:var(--muted);font-size:.8rem}
 @media (max-width:820px){.contact{grid-template-columns:1fr}form.devis{grid-template-columns:1fr}}
 
 .site-footer{background:var(--main-dk);color:#dfe6df;font-size:.85rem}
-.site-footer .in{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-block:24px}
-.site-footer a{text-decoration:none}
+.site-footer .in{padding-block:32px 24px}
+.site-footer a{text-decoration:none;color:#dfe6df}
+.site-footer a:hover{text-decoration:underline}
+.foot-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;padding-bottom:24px;border-bottom:1px solid rgba(255,255,255,.15)}
+.foot-cols h2{font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+.foot-cols ul{list-style:none;margin:0;padding:0}
+.foot-cols li{padding:5px 0}
+.foot-bas{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-top:18px}
+@media (max-width:820px){.foot-cols{grid-template-columns:1fr 1fr}.foot-cols>div:last-child{grid-column:1/-1}.foot-cols li{padding:8px 0}}
 
 /* Barre Appeler / Devis collée en bas sur mobile */
 .mbar{position:fixed;left:0;right:0;bottom:0;display:none;grid-template-columns:1fr 1fr;z-index:9;padding-bottom:env(safe-area-inset-bottom,0px);background:var(--main)}

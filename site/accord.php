@@ -43,7 +43,7 @@ elseif ($valide && $_SERVER['REQUEST_METHOD'] === 'POST') {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Votre devis | Jean Ferret Paysage</title>
 <meta name="robots" content="noindex">
-<link rel="stylesheet" href="/css/style.css?v=20261112a">
+<link rel="stylesheet" href="/css/style.css?v=20261116a">
 <link rel="icon" href="/img/logo.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">

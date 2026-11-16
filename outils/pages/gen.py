@@ -13,7 +13,7 @@ ICI = os.path.dirname(os.path.abspath(__file__))
 RACINE = os.path.abspath(os.path.join(ICI, "..", ".."))
 SITE = os.path.join(RACINE, "site")
 BASE = "https://jeanferretpaysage.fr"
-CSS_V = "20261112a"
+CSS_V = "20261116a"
 sys.path.insert(0, ICI)
 
 modele = open(os.path.join(SITE, "faq", "index.html"), encoding="utf-8").read()
@@ -69,7 +69,7 @@ def page(p):
     if p.get("img"):
         src, alt = p["img"]
         figure = (f'    <figure class="illus"><img src="/{src}" alt="{esc(alt)}" width="800" height="600" '
-                  f'loading="lazy" decoding="async"></figure>\n')
+                  f'fetchpriority="high"></figure>\n')
     faq = ""
     if p.get("faq"):
         faq = '    <h2>Questions fréquentes</h2>\n    <div class="faq">\n' + "".join(
@@ -154,5 +154,6 @@ if __name__ == "__main__":
         page(p)
     # balises de partage et sitemap à jour
     import subprocess
+    subprocess.run([sys.executable, os.path.join(RACINE, "outils", "seo", "gabarit.py")], cwd=RACINE, check=True)
     subprocess.run([sys.executable, os.path.join(RACINE, "outils", "seo", "og.py")], cwd=RACINE, check=True)
     subprocess.run([sys.executable, os.path.join(RACINE, "outils", "seo", "sitemap.py")], cwd=RACINE, check=True)
