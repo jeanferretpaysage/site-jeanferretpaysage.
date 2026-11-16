@@ -12,7 +12,7 @@ ICI = os.path.dirname(os.path.abspath(__file__))
 RACINE = os.path.abspath(os.path.join(ICI, "..", ".."))
 SITE = os.path.join(RACINE, "site")
 BASE = "https://jeanferretpaysage.fr"
-CSS_V = "20261112a"
+CSS_V = "20261116a"
 
 modele = open(os.path.join(SITE, "faq", "index.html"), encoding="utf-8").read()
 HAUT = re.search(r'<div class="topbar">.*?</header>\n', modele, re.S).group(0)
@@ -34,7 +34,10 @@ ENTREPRISE = {
     "telephone": "+33610641947",
     "address": {"@type": "PostalAddress", "streetAddress": "4 le Gendre Moreau", "postalCode": "44360",
                 "addressLocality": "Saint-Étienne-de-Montluc", "addressCountry": "FR"},
-    "geo": {"@type": "GeoCoordinates", "latitude": 47.276, "longitude": -1.781},
+    "geo": {"@type": "GeoCoordinates", "latitude": 47.246763, "longitude": -1.752198},
+    "hasMap": "https://www.google.com/maps?cid=446643228617442300",
+    "sameAs": ["https://www.google.com/maps?cid=446643228617442300"],
+    "priceRange": "€€",
     "openingHoursSpecification": [{
         "@type": "OpeningHoursSpecification",
         "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
@@ -141,7 +144,7 @@ def main():
     <div class="sec-head" style="margin-bottom:8px"><span class="eyebrow">Coordonnées</span><h2>Jean Ferret Paysage</h2></div>
     <div><strong>Téléphone</strong><a href="tel:+33610641947">06 10 64 19 47</a><br><span class="note">Pas de réponse ? Jean est sans doute dans un arbre : laissez un message, il rappelle.</span></div>
     <div><strong>Horaires</strong>Du lundi au samedi, de 9h à 19h</div>
-    <div><strong>Adresse</strong>4 le Gendre Moreau, 44360 Saint-Étienne-de-Montluc<br><span class="note">Pas d'accueil sur place : Jean vient chez vous.</span></div>
+    <div><strong>Adresse</strong>4 le Gendre Moreau, 44360 Saint-Étienne-de-Montluc<br><span class="note">Pas d'accueil sur place : Jean vient chez vous.</span><br><a href="https://www.google.com/maps?cid=446643228617442300" rel="noopener">Voir la fiche Google</a></div>
     <div><strong>Zone d'intervention</strong>Nantes et 30 km autour, en priorité l'ouest de l'agglomération : {communes}.</div>
     <div><strong>Devis gratuit</strong><a href="/tarifs-devis/">Estimez votre prix en 3 clics</a>, ou remplissez le formulaire.</div>
   </div>
