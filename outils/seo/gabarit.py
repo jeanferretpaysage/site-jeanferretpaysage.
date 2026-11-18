@@ -11,6 +11,7 @@ MENU = [
     ("/dessouchage-nantes/", "Souches"),
     ("/tonte-entretien-jardin-nantes/", "Jardin"),
     ("/cloture-claustra-nantes/", "Clôtures"),
+    ("/arbre-tombe-tempete-nantes/", "Tempête"),
     ("/conseils-jardin/", "Conseils"),
     ("/faq/", "FAQ"),
 ]
@@ -18,6 +19,7 @@ MENU = [
 SERVICES = [
     ("/elagage-nantes/", "Élagage"),
     ("/abattage-arbre-nantes/", "Abattage d'arbre"),
+    ("/arbre-tombe-tempete-nantes/", "Arbre tombé après tempête"),
     ("/taille-haie-nantes/", "Taille et abattage de haies"),
     ("/dessouchage-nantes/", "Enlèvement de souches"),
     ("/tonte-entretien-jardin-nantes/", "Tonte et entretien"),

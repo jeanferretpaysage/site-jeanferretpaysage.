@@ -13,7 +13,7 @@ ICI = os.path.dirname(os.path.abspath(__file__))
 RACINE = os.path.abspath(os.path.join(ICI, "..", ".."))
 SITE = os.path.join(RACINE, "site")
 BASE = "https://jeanferretpaysage.fr"
-CSS_V = "20261116a"
+CSS_V = "20261118a"
 sys.path.insert(0, ICI)
 
 modele = open(os.path.join(SITE, "faq", "index.html"), encoding="utf-8").read()
@@ -74,6 +74,15 @@ def page(p):
     if p.get("faq"):
         faq = '    <h2>Questions fréquentes</h2>\n    <div class="faq">\n' + "".join(
             f"      <details><summary>{q}</summary><p>{a}</p></details>\n" for q, a in p["faq"]) + "    </div>\n"
+    devis = '      <a class="btn btn-a" href="/tarifs-devis/">Estimer mon prix avec une photo</a>'
+    appel = '      <a class="btn btn-o" href="tel:+33610641947">Appeler le 06 10 64 19 47</a>'
+    if p.get("appel_first"):  # page urgence : l'appel passe avant le devis
+        boutons = appel.replace("btn-o", "btn-a") + "\n" + devis.replace("btn-a", "btn-o").replace(" avec une photo", "")
+    else:
+        boutons = devis + "\n" + appel
+    side_btns = ('      <a class="btn btn-a" href="tel:+33610641947">Appeler le 06 10 64 19 47</a>\n      <a class="btn btn-m" href="/tarifs-devis/">Envoyer une photo</a>'
+                 if p.get("appel_first") else
+                 '      <a class="btn btn-a" href="/tarifs-devis/">Estimer mon prix</a>\n      <a class="btn btn-m" href="tel:+33610641947">06 10 64 19 47</a>')
     side = "".join(f'        <li><a href="{u}">{n}</a></li>\n' for n, u in p["side"])
     meta_date = ""
     if p.get("article"):
@@ -109,8 +118,7 @@ def page(p):
     <h1>{p["h1"]}</h1>
     <p>{p["intro"]}</p>
     <div class="btns">
-      <a class="btn btn-a" href="/tarifs-devis/">Estimer mon prix avec une photo</a>
-      <a class="btn btn-o" href="tel:+33610641947">Appeler le 06 10 64 19 47</a>
+{boutons}
     </div>
   </div>
 </section>
@@ -123,9 +131,8 @@ def page(p):
   <aside class="side">
     <div class="box">
       <h2>{p.get("side_titre", "Devis gratuit sur photo")}</h2>
-      <p>Une photo, on vous rappelle.</p>
-      <a class="btn btn-a" href="/tarifs-devis/">Estimer mon prix</a>
-      <a class="btn btn-m" href="tel:+33610641947">06 10 64 19 47</a>
+      <p>{"Ou une photo, on vous rappelle." if p.get("appel_first") else "Une photo, on vous rappelle."}</p>
+{side_btns}
     </div>
     <div class="box">
       <h2>{p.get("side_liens", "À lire aussi")}</h2>
@@ -149,8 +156,8 @@ def page(p):
 
 
 if __name__ == "__main__":
-    import blog, villes
-    for p in blog.PAGES + villes.PAGES:
+    import blog, villes, urgence
+    for p in blog.PAGES + villes.PAGES + urgence.PAGES:
         page(p)
     # balises de partage et sitemap à jour
     import subprocess
