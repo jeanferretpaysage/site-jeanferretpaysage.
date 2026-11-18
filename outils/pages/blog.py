@@ -238,9 +238,10 @@ PAGES.append(dict(
     </ul>
 
     <h2>Ensuite, les photos et l'assurance</h2>
-    <p>Avant de toucher à quoi que ce soit, photographiez l'arbre, les dégâts et les alentours. Déclarez le sinistre à votre assureur dans les délais de votre contrat, souvent quelques jours.</p>
+    <p>Avant de toucher à quoi que ce soit, photographiez l'arbre, les dégâts et les alentours. Déclarez le sinistre à votre assureur dans les 5 jours ouvrés en général (30 jours si un arrêté de catastrophe naturelle est publié pour votre commune).</p>
     <p>La garantie tempête des contrats habitation couvre en général les dégâts causés aux bâtiments par un arbre tombé. Le dégagement et l'évacuation de l'arbre ne sont pas toujours pris en charge, surtout quand il n'a rien abîmé. Lisez votre contrat ou demandez à votre assureur, et gardez la facture de l'élagueur.</p>
-    <p>Si votre arbre tombe chez le voisin, c'est en principe votre assurance qui intervient. Si l'arbre était visiblement malade ou mort avant la tempête, votre responsabilité peut être engagée.</p>
+    <p>Si l'arbre du voisin tombe chez vous pendant une tempête, c'est en général votre propre garantie tempête qui couvre vos dégâts : le vent est un événement que personne ne maîtrise. Le propriétaire de l'arbre n'est responsable que s'il était visiblement malade, mort ou mal entretenu avant la tempête. Il faut alors le prouver, d'où l'intérêt des photos.</p>
+    <p>Pour faire dégager l'arbre, voir notre page <a href="/arbre-tombe-tempete-nantes/">arbre tombé après une tempête : intervention et prix</a>.</p>
 
     <h2>Arbre penché, fendu ou déraciné : est-il encore sûr ?</h2>
     <p>Certains signes doivent vous alerter, même si l'arbre est encore debout :</p>
@@ -265,7 +266,7 @@ PAGES.append(dict(
         ("L'assurance paie-t-elle l'évacuation d'un arbre tombé ?",
          "Ça dépend du contrat. Les dégâts aux bâtiments sont en général couverts par la garantie tempête. Le dégagement de l'arbre ne l'est pas toujours : vérifiez auprès de votre assureur."),
         ("Mon arbre est tombé chez le voisin, qui paie ?",
-         "En principe votre assurance responsabilité civile ou habitation. Prévenez-la rapidement avec des photos."),
+         "Lors d'une tempête, chacun fait en général jouer sa propre garantie tempête : le voisin déclare ses dégâts à son assureur. Votre responsabilité n'est engagée que si l'arbre était malade, mort ou mal entretenu avant. Prévenez votre assureur rapidement, avec des photos."),
         ("Puis-je découper moi-même un arbre tombé ?",
          "Un petit arbre au sol, oui avec prudence. Un gros tronc en tension, un arbre sur une toiture ou près d'un fil électrique, non : faites appel à un professionnel."),
     ],

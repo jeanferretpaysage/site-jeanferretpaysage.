@@ -12,7 +12,7 @@ ICI = os.path.dirname(os.path.abspath(__file__))
 RACINE = os.path.abspath(os.path.join(ICI, "..", ".."))
 SITE = os.path.join(RACINE, "site")
 BASE = "https://jeanferretpaysage.fr"
-CSS_V = "20261116a"
+CSS_V = "20261118a"
 
 modele = open(os.path.join(SITE, "faq", "index.html"), encoding="utf-8").read()
 HAUT = re.search(r'<div class="topbar">.*?</header>\n', modele, re.S).group(0)
