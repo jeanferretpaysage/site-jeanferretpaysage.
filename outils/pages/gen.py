@@ -156,11 +156,13 @@ def page(p):
 
 
 if __name__ == "__main__":
-    import blog, villes, urgence
+    import blog, villes, villes_haie, villes_abattage, villes_jardin, urgence
+    villes.finalise()
     for p in blog.PAGES + villes.PAGES + urgence.PAGES:
         page(p)
     # balises de partage et sitemap à jour
     import subprocess
+    subprocess.run([sys.executable, os.path.join(RACINE, "outils", "seo", "liens_villes.py")], cwd=RACINE, check=True)
     subprocess.run([sys.executable, os.path.join(RACINE, "outils", "seo", "gabarit.py")], cwd=RACINE, check=True)
     subprocess.run([sys.executable, os.path.join(RACINE, "outils", "seo", "og.py")], cwd=RACINE, check=True)
     subprocess.run([sys.executable, os.path.join(RACINE, "outils", "seo", "sitemap.py")], cwd=RACINE, check=True)
