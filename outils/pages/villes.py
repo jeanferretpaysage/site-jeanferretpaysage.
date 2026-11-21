@@ -1,7 +1,13 @@
-"""Pages villes pour la taille de haie et l'abattage (5 communes de départ).
+"""Pages « service + commune » : haie, abattage (23 communes), tonte, clôture,
+terrassement et souches (5 grosses communes).
+
+Ce fichier contient l'outillage commun et les 10 premières pages (haie et abattage
+de 5 communes). Les autres pages sont dans villes_haie.py, villes_abattage.py et
+villes_jardin.py, qui appellent ajoute().
 
 Chaque page a son propre texte local : essences, terrain, accès, chantier type,
 règles et déchèterie. Ne pas copier un paragraphe d'une page à l'autre.
+Contrôle du texte commun : python3 outils/seo/similarite.py
 """
 
 VILLES = {
@@ -10,49 +16,143 @@ VILLES = {
     "saint-herblain": ("Saint-Herblain", "44800"),
     "sautron": ("Sautron", "44880"),
     "orvault": ("Orvault", "44700"),
+    "bouguenais": ("Bouguenais", "44340"),
+    "cordemais": ("Cordemais", "44360"),
+    "la-chapelle-sur-erdre": ("La Chapelle-sur-Erdre", "44240"),
+    "la-montagne": ("La Montagne", "44620"),
+    "lavau-sur-loire": ("Lavau-sur-Loire", "44260"),
+    "le-pellerin": ("Le Pellerin", "44640"),
+    "le-temple-de-bretagne": ("Le Temple-de-Bretagne", "44360"),
+    "les-sorinieres": ("Les Sorinières", "44840"),
+    "malville": ("Malville", "44260"),
+    "reze": ("Rezé", "44400"),
+    "saint-jean-de-boisseau": ("Saint-Jean-de-Boisseau", "44640"),
+    "saint-sebastien-sur-loire": ("Saint-Sébastien-sur-Loire", "44230"),
+    "sainte-luce-sur-loire": ("Sainte-Luce-sur-Loire", "44980"),
+    "savenay": ("Savenay", "44260"),
+    "suce-sur-erdre": ("Sucé-sur-Erdre", "44240"),
+    "treillieres": ("Treillières", "44119"),
+    "vertou": ("Vertou", "44120"),
+    "vigneux-de-bretagne": ("Vigneux-de-Bretagne", "44360"),
 }
+# communes voisines, par ordre de priorité (seules celles qui ont la page du même service sont liées)
 VOISINES = {
-    "saint-etienne-de-montluc": ["coueron", "sautron"],
-    "coueron": ["saint-etienne-de-montluc", "saint-herblain", "sautron"],
-    "saint-herblain": ["coueron", "orvault", "sautron"],
-    "sautron": ["orvault", "saint-herblain", "coueron"],
-    "orvault": ["sautron", "saint-herblain"],
+    "saint-etienne-de-montluc": ["coueron", "sautron", "cordemais", "le-temple-de-bretagne", "vigneux-de-bretagne", "saint-herblain"],
+    "coueron": ["saint-etienne-de-montluc", "saint-herblain", "sautron", "le-pellerin", "orvault"],
+    "saint-herblain": ["coueron", "orvault", "sautron", "bouguenais", "reze"],
+    "sautron": ["orvault", "saint-herblain", "coueron", "vigneux-de-bretagne"],
+    "orvault": ["sautron", "saint-herblain", "la-chapelle-sur-erdre", "treillieres", "reze"],
+    "bouguenais": ["reze", "saint-jean-de-boisseau", "la-montagne", "les-sorinieres"],
+    "cordemais": ["saint-etienne-de-montluc", "le-temple-de-bretagne", "malville", "savenay"],
+    "la-chapelle-sur-erdre": ["orvault", "suce-sur-erdre", "treillieres", "sainte-luce-sur-loire"],
+    "la-montagne": ["saint-jean-de-boisseau", "le-pellerin", "bouguenais"],
+    "lavau-sur-loire": ["savenay", "malville", "cordemais"],
+    "le-pellerin": ["la-montagne", "saint-jean-de-boisseau", "coueron"],
+    "le-temple-de-bretagne": ["saint-etienne-de-montluc", "vigneux-de-bretagne", "cordemais", "malville"],
+    "les-sorinieres": ["reze", "vertou", "bouguenais"],
+    "malville": ["savenay", "le-temple-de-bretagne", "cordemais", "lavau-sur-loire"],
+    "reze": ["bouguenais", "les-sorinieres", "vertou", "saint-sebastien-sur-loire", "saint-herblain", "orvault"],
+    "saint-jean-de-boisseau": ["la-montagne", "le-pellerin", "bouguenais"],
+    "saint-sebastien-sur-loire": ["reze", "vertou", "sainte-luce-sur-loire"],
+    "sainte-luce-sur-loire": ["saint-sebastien-sur-loire", "la-chapelle-sur-erdre", "vertou"],
+    "savenay": ["malville", "lavau-sur-loire", "cordemais"],
+    "suce-sur-erdre": ["la-chapelle-sur-erdre", "treillieres"],
+    "treillieres": ["orvault", "vigneux-de-bretagne", "la-chapelle-sur-erdre", "suce-sur-erdre"],
+    "vertou": ["reze", "saint-sebastien-sur-loire", "les-sorinieres"],
+    "vigneux-de-bretagne": ["saint-etienne-de-montluc", "le-temple-de-bretagne", "sautron", "treillieres"],
+}
+# « au Pellerin », « aux Sorinières »…
+_A = {"le-pellerin": "au Pellerin", "le-temple-de-bretagne": "au Temple-de-Bretagne",
+      "les-sorinieres": "aux Sorinières"}
+_PRES = {"le-pellerin": "du Pellerin", "le-temple-de-bretagne": "du Temple-de-Bretagne",
+         "les-sorinieres": "des Sorinières"}
+
+
+def a(slug):
+    return _A.get(slug, "à " + VILLES[slug][0])
+
+
+def pres(slug):
+    return _PRES.get(slug, "de " + VILLES[slug][0])
+
+
+# service : (page mère, nom page mère, préfixe d'adresse, nom court, article conseillé)
+SERVICES = {
+    "haie": ("/taille-haie-nantes/", "Taille de haies", "taille-haie-", "Taille de haie",
+             ("Quand tailler une haie ?", "/conseils-jardin/quand-tailler-une-haie/")),
+    "abattage": ("/abattage-arbre-nantes/", "Abattage d'arbre", "abattage-arbre-", "Abattage d'arbre",
+                 ("Arbre abîmé après une tempête", "/conseils-jardin/arbre-tombe-tempete/")),
+    "tonte": ("/tonte-entretien-jardin-nantes/", "Tonte et entretien", "tonte-", "Tonte et entretien",
+              ("Création de pelouse", "/creation-pelouse-nantes/")),
+    "cloture": ("/cloture-claustra-nantes/", "Clôtures et claustras", "cloture-", "Pose de clôture",
+                ("La haie ou l'arbre du voisin", "/conseils-jardin/arbre-du-voisin/")),
+    "terrassement": ("/terrassement-nantes/", "Terrassement", "terrassement-", "Terrassement",
+                     ("Création de pelouse", "/creation-pelouse-nantes/")),
+    "souche": ("/dessouchage-nantes/", "Enlèvement de souches", "dessouchage-", "Enlèvement de souches",
+               ("Prix d'un abattage d'arbre", "/conseils-jardin/prix-abattage-arbre/")),
+}
+# services « cousins » proposés en lien sur la page d'une commune
+COUSINS = {
+    "haie": ["abattage", "cloture", "souche"],
+    "abattage": ["souche", "haie"],
+    "tonte": ["haie", "terrassement"],
+    "cloture": ["haie", "terrassement"],
+    "terrassement": ["souche", "cloture", "tonte"],
+    "souche": ["abattage", "terrassement"],
 }
 NOTE_PRIX = '<p class="note">Forfait selon le chantier, TVA non applicable (art. 293 B du CGI). <a href="/tarifs-devis/">Tous les tarifs</a>.</p>'
 NOTE_EX = '<p class="note">Exemple représentatif des demandes que l\'on reçoit sur la commune, pas un client précis.</p>'
 
+
+def prix(rows, titre="Prix indicatif", col="Travaux"):
+    """Petit tableau de prix (rows = [(libellé, prix), ...])."""
+    tr = "".join(f"      <tr><td>{l}</td><td>{v}</td></tr>\n" for l, v in rows)
+    return (f'<div class="table-wrap"><table class="prices">\n      <tr><th>{col}</th><th>{titre}</th></tr>\n'
+            f"{tr}    </table></div>\n    {NOTE_PRIX}")
+
+
+_BRUT = []
 PAGES = []
 
 
+def url(service, slug):
+    base, _, prefixe, _, _ = SERVICES[service]
+    return f"{base}{prefixe}{slug}/"
+
+
 def ajoute(service, slug, title, desc, h1, intro, body, faq, band):
-    ville, cp = VILLES[slug]
-    if service == "haie":
-        base, nom_base, prefixe, type_s = "/taille-haie-nantes/", "Taille de haies", "taille-haie-", "Taille de haie"
-        autre = ("Abattage d'arbre à " + ville, f"/abattage-arbre-nantes/abattage-arbre-{slug}/")
-        conseil = ("Quand tailler une haie ?", "/conseils-jardin/quand-tailler-une-haie/")
-    else:
-        base, nom_base, prefixe, type_s = "/abattage-arbre-nantes/", "Abattage d'arbre", "abattage-arbre-", "Abattage d'arbre"
-        autre = ("Taille de haie à " + ville, f"/taille-haie-nantes/taille-haie-{slug}/")
-        conseil = ("Arbre abîmé après une tempête", "/conseils-jardin/arbre-tombe-tempete/")
-    path = f"{base}{prefixe}{slug}/"
-    voisines = "".join(
-        f'      <li><a href="{base}{prefixe}{v}/">{type_s} à {VILLES[v][0]}</a></li>\n' for v in VOISINES[slug])
-    elag = f"/elagage-nantes/elagage-{slug}/"
-    body += f"""
-    <h2>On intervient aussi près de {ville}</h2>
+    _BRUT.append((service, slug, title, desc, h1, intro, body, faq, band))
+
+
+def finalise():
+    """Construit les pages une fois toutes connues (liens vers les voisines qui existent)."""
+    existe = {(s, v) for s, v, *_ in _BRUT}
+    PAGES.clear()
+    for service, slug, title, desc, h1, intro, body, faq, band in _BRUT:
+        ville, cp = VILLES[slug]
+        base, nom_base, prefixe, type_s, conseil = SERVICES[service]
+        path = url(service, slug)
+        vois = [v for v in VOISINES[slug] if (service, v) in existe][:4]
+        if len(vois) < 2:  # services des grosses communes : compléter avec les autres
+            vois += [v for s, v in sorted(existe) if s == service and v != slug and v not in vois][:2 - len(vois)]
+        cousins = [(f"{SERVICES[c][3]} {a(slug)}", url(c, slug)) for c in COUSINS[service] if (c, slug) in existe][:2]
+        elag = (f"Élagage {a(slug)}", f"/elagage-nantes/elagage-{slug}/")
+        lis = "".join(f'      <li><a href="{url(service, v)}">{type_s} {a(v)}</a></li>\n' for v in vois)
+        lis += "".join(f'      <li><a href="{u}">{n}</a></li>\n' for n, u in [elag] + cousins)
+        corps = body + f"""
+    <h2>On intervient aussi près {pres(slug)}</h2>
     <ul class="links">
-{voisines}      <li><a href="{elag}">Élagage à {ville}</a></li>
-      <li><a href="{autre[1]}">{autre[0]}</a></li>
-    </ul>
+{lis}    </ul>
 """
-    PAGES.append(dict(
-        path=path, title=title, desc=desc, h1=h1, intro=intro, body=body, faq=faq, band=band,
-        crumbs=[(nom_base, base), (ville, path)],
-        menu=base,
-        service=dict(name=f"{type_s} à {ville}", type=type_s, city=ville, cp=cp),
-        side=[(f"{nom_base} : la page complète", base), (f"Élagage à {ville}", elag), autre, conseil],
-        side_titre=f"Devis gratuit à {ville}",
-    ))
+        PAGES.append(dict(
+            path=path, title=title, desc=desc, h1=h1, intro=intro, body=corps, faq=faq, band=band,
+            crumbs=[(nom_base, base), (ville, path)],
+            menu=base,
+            service=dict(name=f"{type_s} {a(slug)}", type=type_s, city=ville, cp=cp),
+            side=[(f"{nom_base} : la page complète", base), elag] + cousins[:1] + [conseil],
+            side_titre=f"Devis gratuit {a(slug)}",
+        ))
+    return PAGES
 
 
 # =====================================================================
