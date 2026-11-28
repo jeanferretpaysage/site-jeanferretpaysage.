@@ -23,14 +23,21 @@ function telecharger($url) {
 }
 
 // 1. Y a-t-il une nouvelle version ?
+// L'API GitHub limite les appels sans compte (60 par heure et par adresse, partagée
+// chez Ionos) : si elle refuse, on lit la version dans le flux public des commits.
 $info = telecharger('https://api.github.com/repos/' . DEPOT . '/commits/' . BRANCHE);
 $sha = $info ? (json_decode($info, true)['sha'] ?? '') : '';
+if ($sha === '') {
+  $flux = telecharger('https://github.com/' . DEPOT . '/commits/' . BRANCHE . '.atom');
+  if ($flux && preg_match('#Commit/([0-9a-f]{40})#', $flux, $m)) $sha = $m[1];
+}
 if ($sha === '') { note('GitHub injoignable, on réessaiera.'); exit; }
 $force = isset($argv[1]) && $argv[1] === 'force';
 if (!$force && is_file($memo) && trim(file_get_contents($memo)) === $sha) exit; // déjà à jour
 
 // 2. Télécharger et copier
-$zip = telecharger('https://api.github.com/repos/' . DEPOT . '/zipball/' . $sha);
+$zip = telecharger('https://codeload.github.com/' . DEPOT . '/zip/' . $sha); // pas de limite d'API
+if ($zip === false) $zip = telecharger('https://api.github.com/repos/' . DEPOT . '/zipball/' . $sha);
 if ($zip === false) { note('Téléchargement impossible.'); exit; }
 $tmp = $ici . '/depot.zip';
 file_put_contents($tmp, $zip);
